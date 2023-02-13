@@ -12,7 +12,11 @@ import {
 import { Button, Column, Row } from "native-base";
 import CircularProgress from "react-native-circular-progress-indicator";
 
-const Results_present = () => {
+const Results_present = ({ route, navigation }) => {
+  const onSubmit = () => {
+  
+    navigation.navigate("Video_page");
+  };
     // create a array of "ab","bc","cd","de","ef"
     const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));
   return (
@@ -126,7 +130,14 @@ const Results_present = () => {
                   text={"test"}
                   setAudioFiles={"2"}
                 />
+                <Button color="success.600" onPress={onSubmit}>
+              SUBMIT
+            </Button>
       </View>
+
+      <View height={100} />
+      {/* add a submit button */}
+      
       <ScrollView horizontal={true} style={styles.horContainter}>
         {arr.map((item, index) => (
             <TouchableOpacity

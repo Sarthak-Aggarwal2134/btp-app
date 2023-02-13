@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Recorder from "../utils/recorder";
-import Video from "react-native-video";
+import { WebView } from 'react-native-webview'; 
+import Iframe from 'react-iframe';
 import {
   Text,
   View,
@@ -66,16 +67,16 @@ const Video_page = () => {
        
       </View>
       
-      <View height={10} />
-      <View style={styles.container}>
-      <Video
-source={{ uri: 'https://youtu.be/nZP7pb_t4oA' }}
-style={{ width: 300, height: 300 }}
-controls={true}
-onBuffer={this.videoBuffer}
-ref={(ref) => {
-this.player = ref
-}} />
+      <View height={200} >
+      <WebView
+   source={{html: '<iframe width="100%" height="80%" src="https://www.youtube.com/embed/mYUyaKmvu6Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'}}
+   style={{marginTop: 20}}
+/>
+      </View>
+      <View height={250}>
+      
+      
+        
       </View>
       <ScrollView horizontal={true} style={styles.horContainter}>
         {arr.map((item, index) => (
