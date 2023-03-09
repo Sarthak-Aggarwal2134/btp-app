@@ -15,7 +15,7 @@ import CircularProgress from "react-native-circular-progress-indicator";
 const Results_present = ({ route, navigation }) => {
   const onSubmit = () => {
   
-    navigation.navigate("Video_page");
+    navigation.navigate("Bar_graph");
   };
     // create a array of "ab","bc","cd","de","ef"
     const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));

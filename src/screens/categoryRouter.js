@@ -7,6 +7,8 @@ import Lesson from "./lesson";
 import Results from "./results";
 import Results_present from "./results_present";
 import Video_page from "./video_page";
+import Fluency from "./Fluency";
+import Bar_graph from "./Bar_graph";
 const CategoryStack = createStackNavigator();
 
 export default function CategoryRouter({ category }) {
@@ -24,9 +26,13 @@ export default function CategoryRouter({ category }) {
       <CategoryStack.Screen name="Results_present">
         {(props) => <Results_present {...props} />}
       </CategoryStack.Screen>
-      <CategoryStack.Screen name="Video_page">
-        {(props) => <Video_page {...props} />}
+      <CategoryStack.Screen name="Fluency">
+        {(props) => <Fluency {...props} />}
       </CategoryStack.Screen>
+      <CategoryStack.Screen name="Bar_graph">
+        {(props) => <Bar_graph {...props} />}
+      </CategoryStack.Screen>
+
     </CategoryStack.Navigator>
   );
 }
