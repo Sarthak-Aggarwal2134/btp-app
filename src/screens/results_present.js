@@ -11,12 +11,16 @@ import {
 
 import { Button, Column, Row } from "native-base";
 import CircularProgress from "react-native-circular-progress-indicator";
+import { Rating, AirbnbRating } from 'react-native-ratings';
+import Bar_graph from "./results_graph";
 
 const Results_present = ({ route, navigation }) => {
   const onSubmit = () => {
   
     navigation.navigate("Bar_graph");
   };
+  
+
     // create a array of "ab","bc","cd","de","ef"
     const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));
   return (
@@ -27,7 +31,20 @@ const Results_present = ({ route, navigation }) => {
         <Row>
           {/* make 5 columns having "hello" in each column */}
           <Column style={{ margin: 10 }}>
-            <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} />
+            {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
+            {/* rating = 0.6 */}
+            <Text style={{ fontSize: 10, fontWeight: "bold" ,textAlign: "center" }}>
+            Rating = 0.6
+                </Text>
+            <Rating
+              type="star"
+              ratingCount={1}
+              fractions={10}
+              startingValue={0.6}
+              imageSize={40}
+              // showRating
+              style={{ paddingVertical: 10 }}
+            />
             <Row>
                 {/* show the first element of the array */}
                 
@@ -83,7 +100,18 @@ const Results_present = ({ route, navigation }) => {
       <Row>
           {/* make 5 columns having "hello" in each column */}
           <Column style={{ margin: 10 }}>
-            <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} />
+            <Text style={{ fontSize: 10, fontWeight: "bold" ,textAlign: "center" }}>
+            Rating = 0.4
+                </Text>
+            <Rating
+              type="star"
+              ratingCount={1}
+              fractions={10}
+              startingValue={0.4}
+              imageSize={40}
+              // showRating
+              style={{ paddingVertical: 10 }}
+            />
             <Row>
                 {/* show the first element of the array */}
                 
