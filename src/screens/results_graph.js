@@ -11,7 +11,7 @@ import { Rating, AirbnbRating } from "react-native-ratings";
 import { ReactSVG } from "react";
 
 import Bargraph from "./bargraph_component";
-
+import Graph from "./Graph";
 const Bar_graph = () => {
   const onSubmit = () => {
     navigation.navigate("Home");
@@ -122,7 +122,7 @@ const Bar_graph = () => {
         </View>
 
         
-        <Bargraph />
+        <Graph />
         <View style={{ padding: 20, alignItems: "center" }}></View>
         <View>
           <Button color="success.600" onPress={onSubmit}>
