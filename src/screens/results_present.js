@@ -9,20 +9,42 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import drop from "./drop.png"
+const mapping = {
+  1: "phenome",
+  2: "stress",
+  3: "intonation",
+  4: "sentence",
+};
+// import drop from "./drop.png"
 import { Button, Column, Row } from "native-base";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import Bar_graph from "./results_graph";
-import Graph from "./Graph";
-
+import Graph from "./Line_Graph_component";
 const Results_present = ({ route, navigation }) => {
   // variable set to 0
+  console.log(route.params.data)
+  var check=route.params.data._parts[0][1]
+  // console.log(check)
   var fir = 0
   var sec = 0
   const onSubmit = () => {
-  
-    navigation.navigate("Bar_graph");
+    //  chewck if the category is phoneme, then redirect it to the phoneme page
+    if(check=="phenome"){
+      navigation.navigate("Phoneme");
+    }
+    //  chewck if the category is stress, then redirect it to the stress page
+    else if(check=="stress"){
+      navigation.navigate("Result_graph_1");
+    }
+    //  chewck if the category is intonation, then redirect it to the intonation page
+    else if(check=="intonation"){
+      navigation.navigate("Result_graph_2");
+    }
+    //  chewck if the category is sentence, then redirect it to the sentence page
+    else if(check=="sentence"){
+      navigation.navigate("Fluency");
+    }
   };
   const onSubmit1 = () => {
     fir = 1-fir
@@ -115,7 +137,7 @@ const Results_present = ({ route, navigation }) => {
     
         </Column> */}
         <Column style = {{paddingLeft:150}}>
-        <Button colorScheme={White} onPress={onSubmit1}>
+        <Button colorScheme="primary" variant="subtle" onPress={onSubmit1}>
       
 \/
                 </Button>
@@ -185,7 +207,7 @@ const Results_present = ({ route, navigation }) => {
     
         </Column> */}
         <Column style = {{paddingLeft:150}}>
-        <Button color="white.600" onPress={onSubmit2}>
+        <Button colorScheme="primary" variant="subtle" onPress={onSubmit2}>
                   \/
                 </Button>
                 </Column>

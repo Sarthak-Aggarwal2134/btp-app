@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
 import capitalizeFirstLetter from "../utils/helper";
 
 const Home = ({ categories, navigation }) => {
@@ -10,7 +9,9 @@ const Home = ({ categories, navigation }) => {
         <TouchableOpacity
           key={category.id}
           style={styles.category}
-          onPress={() => navigation.navigate(category.type)}
+          onPress={() => {
+
+            navigation.navigate(category.type)}}
         >
           <Text style={styles.text}>
             Learn {capitalizeFirstLetter(category.type)} Pronounciation

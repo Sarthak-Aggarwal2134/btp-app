@@ -11,6 +11,7 @@ import {
 import { Button } from "native-base";
 
 import Recorder from "../utils/recorder";
+import Category from "./category";
 
 const mapping = {
   1: "phenome",
@@ -28,6 +29,7 @@ const Lesson = ({ route, navigation }) => {
 
   useEffect(() => {
     const data = { id: route.params };
+    console.log(data);
     axios
       .post("https://asr.iiit.ac.in/chiranjeevi/voisserve/get/questions", data)
       .then((res) => {
@@ -40,6 +42,9 @@ const Lesson = ({ route, navigation }) => {
 
   const onSubmit = () => {
     var data = new FormData();
+    
+    // console.log(mapping[route.params]);
+    // console.log(route)
     data.append("cattype", mapping[route.params]);
     data.append("mode", "submitrecording");
     let ids = [];
@@ -47,7 +52,12 @@ const Lesson = ({ route, navigation }) => {
       ids.push(text.id);
     });
     data.append("id", ids);
-    navigation.navigate("Results_present");
+    // navigation.navigate("Results_present");
+    // navigate to result page and pass data
+    navigation.navigate("Results_present", {
+      data: data,
+      audioFiles: audioFiles,
+    });
   };
 
   return (

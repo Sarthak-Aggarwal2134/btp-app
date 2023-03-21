@@ -9,14 +9,22 @@ import { Button, Column, Row } from "native-base";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import { ReactSVG } from "react";
-import Bargraph from "./bargraph_component";
-// import Bar_graph from "./Bar_graph";
-import Graph from "./Line_Graph_component";
-const Result_graph_1 = () => {
+import Line_Graph from "./Line_Graph_component";
+const Result_graph_2 = () => {
   const onSubmit = () => {
     navigation.navigate("Home");
   };
- 
+  const series = [
+    {
+      data: [1, 2, 3],
+    },
+    {
+      data: [5, 7, 11],
+    },
+    {
+      data: [13, 17, 19],
+    },
+  ];
 
   // create a array of "ab","bc","cd","de","ef"
   const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));
@@ -112,7 +120,7 @@ const Result_graph_1 = () => {
         </View>
 
         
-        <Bargraph />
+        <Line_Graph />
         <View style={{ padding: 20, alignItems: "center" }}></View>
         <View>
           <Button color="success.600" onPress={onSubmit}>
@@ -161,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Result_graph_1;
+export default Result_graph_2;

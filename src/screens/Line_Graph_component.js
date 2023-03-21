@@ -28,7 +28,7 @@ const data={
     ]
 }
 
-const Graph = () => {
+const Line_Graph = () => {
     return (
         <View>
             <VictoryChart>
@@ -46,4 +46,4 @@ const Graph = () => {
         </View>
     );
     }   
-export default Graph;
+export default Line_Graph;
