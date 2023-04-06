@@ -23,17 +23,54 @@ import { Rating, AirbnbRating } from "react-native-ratings";
 import Bar_graph from "./results_graph";
 import Graph from "./Line_Graph_component";
 const Results_present = ({ route, navigation }) => {
-  // variable set to 0
-  route.params.data._parts=route.params.data._parts.concat(route.params.audioFiles)
-  console.log(route.params.audioFiles);
+  const [loading, setLoading] = useState(true);
   var check = route.params.data._parts[0][1];
+  const [responses, setResponses] = useState([]);
   useEffect(() => {
-    // console.log(route.params.data._parts[0][1]);
-    axios
-    .post("https://asr.iiit.ac.in/chiranjeevi/voisserve/post/submit",route.params.audioFiles)
-    .then((res) => {
-      console.log(res.data);
-    })
+    const APICall = async () => {
+      for (var i = 0; i < route.params.audioFiles.length; i++) {
+      const data = new FormData();
+      let fileName = route.params.data._parts[0][1];
+      fileName = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+      if (fileName == "Stress") {
+        fileName = `Stress\_L1\_${i+2}_8.wav`;
+      }
+      else if (fileName == "Phenome") {
+        fileName = `Phoneme\_L1\_1\-${i+1}_8.wav`;
+      }
+      console.log(fileName);
+      data.append("audioFiles", {
+        uri: route.params.audioFiles[i],
+        type: "audio/wav",
+        name: `${fileName}`,
+      });
+      let cattype = route.params.data._parts[0][1];
+      if (cattype == "phenome") {
+        cattype = "phoneme";
+      }
+      data.append("cattype", cattype);
+      data.append("mode", "submitrecording");
+      data.append("id", route.params.data._parts[2][1][0].toString(10));
+        await fetch(
+          "https://asr.iiit.ac.in/chiranjeevi/voisserve/post/submit",
+          {
+            method: "POST",
+            body: data,
+          }
+        )
+          .then((res) => {
+            console.log(res.status);
+            return res.json();
+          })
+          .then((data) => {
+            setResponses((responses) => [...responses, data]);
+            console.log(data);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err.response));
+      };
+    }
+    APICall();
   }, []);
 
   // console.log(check)
@@ -63,118 +100,7 @@ const Results_present = ({ route, navigation }) => {
   const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));
   return (
     <>
-    <View style={{height:"100%"}}>
-
-    
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-          textAlign: "center",
-          margin: 10,
-          color: "#ff5733",
-        }}
-      >
-        Peak
-      </Text>
-      <ScrollView style={{ flex: 1,height: "100%" }}>
-        <View style={styles.container}>
-          <Row>
-            {/* make 5 columns having "hello" in each column */}
-            <Column style={{ margin: 10 }}>
-              {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
-              {/* rating = 0.6 */}
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                Rating = 0.6
-              </Text>
-              <Rating
-                type="star"
-                ratingCount={1}
-                fractions={10}
-                startingValue={0.6}
-                imageSize={40}
-                // showRating
-                style={{ paddingVertical: 10 }}
-              />
-              <Row>{/* show the first element of the array */}</Row>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[0]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[1]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[2]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[3]}
-              </Text>
-            </Column>
-          </Row>
-          <CollapsibleView title={"Expand"}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>You Speak</Text>
-            <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              Expert Speak
-            </Text>
-            <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-          </CollapsibleView>
-          <View>
-            <Row>
-              <Column></Column>
-              {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
-        <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>  
-    
-        </Column> */}
-              <Column style={{ paddingLeft: 150 }}></Column>
-              <Column></Column>
-            </Row>
-          </View>
-        </View>
-
-        <View height={10} />
+      <View style={{ height: "100%" }}>
         <Text
           style={{
             fontSize: 20,
@@ -184,115 +110,225 @@ const Results_present = ({ route, navigation }) => {
             color: "#ff5733",
           }}
         >
-          Beak
+          Peak
         </Text>
-
-        <View style={styles.container}>
-          <Row>
-            {/* make 5 columns having "hello" in each column */}
-            <Column style={{ margin: 10 }}>
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                Rating = 0.4
-              </Text>
-              <Rating
-                type="star"
-                ratingCount={1}
-                fractions={10}
-                startingValue={0.4}
-                imageSize={40}
-                // showRating
-                style={{ paddingVertical: 10 }}
-              />
-              <Row>{/* show the first element of the array */}</Row>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[0]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[1]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[2]}
-              </Text>
-            </Column>
-            <Column style={{ margin: 10 }}>
-              <CircularProgress radius={28} value={58} />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {arr[3]}
-              </Text>
-            </Column>
-          </Row>
-          <CollapsibleView title={"Expand"}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>You Speak</Text>
-            <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              Expert Speak
-            </Text>
-            <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-          </CollapsibleView>
-
-          <View>
+        <ScrollView style={{ flex: 1, height: "100%" }}>
+          <View style={styles.container}>
             <Row>
-              <Column></Column>
-              {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
+              {/* make 5 columns having "hello" in each column */}
+              <Column style={{ margin: 10 }}>
+                {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
+                {/* rating = 0.6 */}
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Rating = 0.6
+                </Text>
+                <Rating
+                  type="star"
+                  ratingCount={1}
+                  fractions={10}
+                  startingValue={0.6}
+                  imageSize={40}
+                  // showRating
+                  style={{ paddingVertical: 10 }}
+                />
+                <Row>{/* show the first element of the array */}</Row>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[0]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[1]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[2]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[3]}
+                </Text>
+              </Column>
+            </Row>
+            <CollapsibleView title={"Expand"}>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                You Speak
+              </Text>
+              <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                Expert Speak
+              </Text>
+              <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+            </CollapsibleView>
+            <View>
+              <Row>
+                <Column></Column>
+                {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
         <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>  
     
         </Column> */}
-              <Column style={{ paddingLeft: 150 }}></Column>
-              <Column></Column>
-            </Row>
+                <Column style={{ paddingLeft: 150 }}></Column>
+                <Column></Column>
+              </Row>
+            </View>
           </View>
 
-          
-        </View>
+          <View height={10} />
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              margin: 10,
+              color: "#ff5733",
+            }}
+          >
+            Beak
+          </Text>
 
-        <View height={100} />
-        {/* add a submit button */}
+          <View style={styles.container}>
+            <Row>
+              {/* make 5 columns having "hello" in each column */}
+              <Column style={{ margin: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Rating = 0.4
+                </Text>
+                <Rating
+                  type="star"
+                  ratingCount={1}
+                  fractions={10}
+                  startingValue={0.4}
+                  imageSize={40}
+                  // showRating
+                  style={{ paddingVertical: 10 }}
+                />
+                <Row>{/* show the first element of the array */}</Row>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[0]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[1]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[2]}
+                </Text>
+              </Column>
+              <Column style={{ margin: 10 }}>
+                <CircularProgress radius={28} value={58} />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {arr[3]}
+                </Text>
+              </Column>
+            </Row>
+            <CollapsibleView title={"Expand"}>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                You Speak
+              </Text>
+              <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                Expert Speak
+              </Text>
+              <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+            </CollapsibleView>
 
-      </ScrollView>
-      <View style={{ bottom:10, height:50}}>
-      <Button color="success.600" onPress={onSubmit}>
+            <View>
+              <Row>
+                <Column></Column>
+                {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
+        <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>  
+    
+        </Column> */}
+                <Column style={{ paddingLeft: 150 }}></Column>
+                <Column></Column>
+              </Row>
+            </View>
+          </View>
+
+          <View height={100} />
+          {/* add a submit button */}
+        </ScrollView>
+        <View style={{ bottom: 10, height: 50 }}>
+          <Button color="success.600" onPress={onSubmit}>
             SUBMIT
           </Button>
-      </View>
+        </View>
       </View>
     </>
   );
