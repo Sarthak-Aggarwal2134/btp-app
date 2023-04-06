@@ -12,15 +12,15 @@ import { useSelector,useDispatch } from "react-redux";
 import { setURI1,setURI2 } from "../redux/actions";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Filler from "./filler";
+// make a variable for exporting the uri which can be used in the next screen
 
-export default function Recorder({ text,props,count }) {
+export default function Recorder({ key, text, count, recordedURI, setRecordedURI }) {
   const {URI1,URI2}=useSelector(state=>state.uri_reducer);
   const dispatch=useDispatch();
   const AudioRecorder = useRef(new Audio.Recording());
   const AudioPlayer = useRef(new Audio.Sound());
 
   // States for UI
-  const [RecordedURI, SetRecordedURI] = useState("");
   const [AudioPermission, SetAudioPermission] = useState(false);
   const [IsRecording, SetIsRecording] = useState(false);
   const [IsPLaying, SetIsPLaying] = useState(false);
@@ -94,14 +94,20 @@ export default function Recorder({ text,props,count }) {
       // Get the recorded URI here
       const result = AudioRecorder.current.getURI();
       if (result) {
-        SetRecordedURI(result);
+        const newURIs = {
+          ...recordedURI, 
+          [text.id]: result
+        };
+        console.log("in recorder:",newURIs);
+        setRecordedURI(newURIs);
+        // set recordeduri1 to the result
         // props.GETURI(result);
         global.recordedURI1=result;
         
      console.log(result)
     
     }
-      // console.log(RecordedURI);
+      // console.log(recordedURI);
 
       // Reset the Audio Recorder
       AudioRecorder.current = new Audio.Recording();
@@ -115,8 +121,8 @@ export default function Recorder({ text,props,count }) {
   const PlayRecordedAudio = async () => {
     try {
       // Load the Recorded URI
-      await AudioPlayer.current.loadAsync({ uri: RecordedURI }, {}, true);
-      console.log(RecordedURI)
+      await AudioPlayer.current.loadAsync({ uri: recordedURI }, {}, true);
+      console.log(recordedURI)
 
       // Get Player Status
       const playerStatus = await AudioPlayer.current.getStatusAsync();
@@ -145,6 +151,7 @@ export default function Recorder({ text,props,count }) {
     } catch (error) {}
   };
 
+  console.log("Key Id:", key, text);
   return (
     <View style={styles.question}>
       {results ? (

@@ -29,11 +29,11 @@ const geturi= ()=>{
 const Lesson = ({ route, navigation }) => {
 
   const [loading, setLoading] = useState(true);
-  const [recordedURI, setRecordedURI] = useState("");
+  const [recordedURIs, setRecordedURIs] = useState("");
   const [questions, setQuestions] = useState({});
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [audioFiles, setAudioFiles] = useState([]);
-
+  // append the recordedURI1 to the audioFiles array
   useEffect(() => {
     const { lessonId, categoryId } = route.params;
     console.log(lessonId)
@@ -44,14 +44,19 @@ const Lesson = ({ route, navigation }) => {
       .then((res) => {
         setQuestions(res.data.questions);
         setSelectedQuestion(Object.keys(res.data.questions)[0]);
+
         setLoading(false);
       })
       .catch((err) => console.log(err.response));
   }, [route.params]);
 
+  // append recordedURIs to audio files
+  useEffect(() => {
+    setAudioFiles(Object.values(recordedURIs));
+  }, [recordedURIs]);
+
   const onSubmit = () => {
     var data = new FormData();
-    console.log(recordedURI);
     // console.log(mapping[route.params]);
     // console.log(route)
     data.append("cattype", mapping[route.params.categoryId]);
@@ -79,13 +84,17 @@ const Lesson = ({ route, navigation }) => {
               <Text>
                 {selectedQuestion} of {Object.keys(questions).length}
               </Text>
-              {questions[selectedQuestion].map((text) => (
-                <Recorder
+              {questions[selectedQuestion].map((text, index) => {
+                console.log("ID:",text.id);
+                return <Recorder
                   key={text.id}
                   text={text}
                   count={questions[selectedQuestion].length}
+                  setRecordedURI={setRecordedURIs}
+                  recordedURI={recordedURIs}
                 />
-              ))}
+              })}
+              {console.log(audioFiles)}
             </View>
             <Button color="success.600" onPress={onSubmit}>
               SUBMIT
