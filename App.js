@@ -2,7 +2,8 @@ import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import {Provider} from "react-redux";
+import {Store} from "./src/redux/store";
 import Login from "./src/auth/login";
 import Signup from "./src/auth/signup";
 import Landing from "./src/screens/router";
@@ -37,11 +38,13 @@ function App() {
   return (
     <>
       {!loading && (
+        <Provider store={Store}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {!userFound && <Stack.Screen name="Login" component={Login} />}
           {!userFound && <Stack.Screen name="Signup" component={Signup} />}
           <Stack.Screen name="Landing" component={Landing} />
         </Stack.Navigator>
+        </Provider>
       )}
     </>
   );

@@ -28,7 +28,7 @@ const Category = ({ category, navigation }) => {
           <TouchableOpacity
             key={lesson.id}
             style={styles.category}
-            onPress={() => navigation.navigate("Lesson", category.id)}
+            onPress={() => navigation.navigate("Lesson",{ lessonId: lesson.id, categoryId: category.id })}
           >
             <Text style={styles.text}>Lesson {id + 1}</Text>
             <View style={styles.line} />

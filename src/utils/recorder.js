@@ -2,15 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import moment from "moment";
+//  import the global variable
+import global from "../global";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Input, Slider, IconButton } from "native-base";
 import { Icon } from "react-native-gradient-icon";
-
+import { useSelector,useDispatch } from "react-redux";
+import { setURI1,setURI2 } from "../redux/actions";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Filler from "./filler";
 
-export default function Recorder({ text }) {
+export default function Recorder({ text,props,count }) {
+  const {URI1,URI2}=useSelector(state=>state.uri_reducer);
+  const dispatch=useDispatch();
   const AudioRecorder = useRef(new Audio.Recording());
   const AudioPlayer = useRef(new Audio.Sound());
 
@@ -84,11 +89,19 @@ export default function Recorder({ text }) {
     try {
       // Stop recording
       await AudioRecorder.current.stopAndUnloadAsync();
-
+      //  print the length passed in the lesson.js page
+      console.log(count)
       // Get the recorded URI here
       const result = AudioRecorder.current.getURI();
-      if (result) SetRecordedURI(result);
-      console.log(result);
+      if (result) {
+        SetRecordedURI(result);
+        // props.GETURI(result);
+        global.recordedURI1=result;
+        
+     console.log(result)
+    
+    }
+      // console.log(RecordedURI);
 
       // Reset the Audio Recorder
       AudioRecorder.current = new Audio.Recording();
@@ -103,6 +116,7 @@ export default function Recorder({ text }) {
     try {
       // Load the Recorded URI
       await AudioPlayer.current.loadAsync({ uri: RecordedURI }, {}, true);
+      console.log(RecordedURI)
 
       // Get Player Status
       const playerStatus = await AudioPlayer.current.getStatusAsync();

@@ -24,7 +24,7 @@ import Bar_graph from "./results_graph";
 import Graph from "./Line_Graph_component";
 const Results_present = ({ route, navigation }) => {
   // variable set to 0
-  console.log(route.params.data);
+  console.log(route.params.audioFiles);
   var check = route.params.data._parts[0][1];
   // console.log(check)
   var fir = 0;

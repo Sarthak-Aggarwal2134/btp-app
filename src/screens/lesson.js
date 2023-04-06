@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import global from "../global"
+import Consoleuri from "../consoleuri"
 import {
   Text,
   View,
@@ -20,15 +22,22 @@ const mapping = {
   4: "sentence",
 };
 
-const Lesson = ({ route, navigation }) => {
-  const [loading, setLoading] = useState(true);
+const geturi= ()=>{
+  console.log(global.recordedURI1)
+}
 
+const Lesson = ({ route, navigation }) => {
+
+  const [loading, setLoading] = useState(true);
+  const [recordedURI, setRecordedURI] = useState("");
   const [questions, setQuestions] = useState({});
   const [selectedQuestion, setSelectedQuestion] = useState({});
   const [audioFiles, setAudioFiles] = useState([]);
 
   useEffect(() => {
-    const data = { id: route.params };
+    const { lessonId, categoryId } = route.params;
+    console.log(lessonId)
+    const data = { id: lessonId };
     console.log(data);
     axios
       .post("https://asr.iiit.ac.in/chiranjeevi/voisserve/get/questions", data)
@@ -42,10 +51,10 @@ const Lesson = ({ route, navigation }) => {
 
   const onSubmit = () => {
     var data = new FormData();
-    
+    console.log(recordedURI);
     // console.log(mapping[route.params]);
     // console.log(route)
-    data.append("cattype", mapping[route.params]);
+    data.append("cattype", mapping[route.params.categoryId]);
     data.append("mode", "submitrecording");
     let ids = [];
     questions[selectedQuestion].forEach((text) => {
@@ -54,6 +63,7 @@ const Lesson = ({ route, navigation }) => {
     data.append("id", ids);
     // navigation.navigate("Results_present");
     // navigate to result page and pass data
+    console.log(audioFiles)
     navigation.navigate("Results_present", {
       data: data,
       audioFiles: audioFiles,
@@ -73,7 +83,7 @@ const Lesson = ({ route, navigation }) => {
                 <Recorder
                   key={text.id}
                   text={text}
-                  setAudioFiles={setAudioFiles}
+                  count={questions[selectedQuestion].length}
                 />
               ))}
             </View>
