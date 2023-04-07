@@ -38,6 +38,12 @@ const Results_present = ({ route, navigation }) => {
       else if (fileName == "Phenome") {
         fileName = `Phoneme\_L1\_1\-${i+1}_8.wav`;
       }
+      else if (fileName == "Intonation") {
+        fileName = `Intonation\_L1\_${i+2}_8.wav`;
+      }
+      else if (fileName == "Sentence") {
+        fileName = `Sentence\_L1\_${i+2}_8.wav`;
+      }
       console.log(fileName);
       data.append("audioFiles", {
         uri: route.params.audioFiles[i],
@@ -60,19 +66,21 @@ const Results_present = ({ route, navigation }) => {
         )
           .then((res) => {
             console.log(res.status);
+            // console.log(data.results.PhonemePronunciationScores);
+
             return res.json();
           })
           .then((data) => {
+            console.log(data.results)
             setResponses((responses) => [...responses, data]);
-            console.log(data);
             setLoading(false);
           })
           .catch((err) => console.log(err.response));
       };
     }
+    
     APICall();
   }, []);
-
   // console.log(check)
   var fir = 0;
   var sec = 0;
