@@ -71,8 +71,13 @@ const Results_present = ({ route, navigation }) => {
             return res.json();
           })
           .then((data) => {
-            console.log(data.results)
+            // size of data.results
+             
+            // console.log(data.results)
             setResponses((responses) => [...responses, data]);
+            // total number of responses
+            console.log("responses",responses);
+
             setLoading(false);
           })
           .catch((err) => console.log(err.response));
@@ -81,6 +86,10 @@ const Results_present = ({ route, navigation }) => {
     
     APICall();
   }, []);
+
+// console.log(responses) gives [{"results": {"PhonemePronunciationScores": [Array], "WordPronunciationScore": [Array], "colors": [Array], "expertAudios": [Array], "phonemeletters": [Array], "userAudios": [Array], "videos": [Array]}}, {"results": {"PhonemePronunciationScores": [Array], "WordPronunciationScore": [Array], "colors": [Array], "expertAudios": [Array], "phonemeletters": [Array], "userAudios": [Array], "videos": [Array]}}]
+
+
   // console.log(check)
   var fir = 0;
   var sec = 0;
@@ -106,8 +115,26 @@ const Results_present = ({ route, navigation }) => {
   };
   // create a array of "ab","bc","cd","de","ef"
   const arr = Array.from({ length: 20 }, (_, i) => String.fromCharCode(97 + i));
+   
+  // if the loading is true, then show the loading screen
+  if (loading) {
+
+    return(
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <Text>Loading...</Text>
+      </View>
+
+
+    )
+  }
+  // if the loading is false, then show the results screen
+  else{
+
+
+
   return (
     <>
+
       <View style={{ height: "100%" }}>
         <Text
           style={{
@@ -120,6 +147,21 @@ const Results_present = ({ route, navigation }) => {
         >
           Peak
         </Text>
+        {
+          responses.map((response, index) => {
+            <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            textAlign: "center",
+            margin: 10,
+            color: "#ff5733",
+          }}
+        >
+          Peak
+        </Text>
+          })
+        }
         <ScrollView style={{ flex: 1, height: "100%" }}>
           <View style={styles.container}>
             <Row>
@@ -341,6 +383,7 @@ const Results_present = ({ route, navigation }) => {
     </>
   );
 };
+}
 
 const styles = StyleSheet.create({
   container: {
