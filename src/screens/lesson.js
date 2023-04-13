@@ -22,9 +22,6 @@ const mapping = {
   4: "sentence",
 };
 
-const geturi= ()=>{
-  console.log(global.recordedURI1)
-}
 
 const Lesson = ({ route, navigation }) => {
 
@@ -36,9 +33,9 @@ const Lesson = ({ route, navigation }) => {
   // append the recordedURI1 to the audioFiles array
   useEffect(() => {
     const { lessonId, categoryId } = route.params;
-    console.log(lessonId)
+    // console.log("xd",lessonId)
     const data = { id: lessonId };
-    console.log(data);
+    // console.log("hehe",data);
     axios
       .post("https://asr.iiit.ac.in/chiranjeevi/voisserve/get/questions", data)
       .then((res) => {
@@ -54,18 +51,28 @@ const Lesson = ({ route, navigation }) => {
   useEffect(() => {
     setAudioFiles(Object.values(recordedURIs));
   }, [recordedURIs]);
+  // console.log("bla bla",questions[selectedQuestion].pattern);
 
   const onSubmit = () => {
     var data = new FormData();
     // console.log(mapping[route.params]);
     // console.log(route)
+    // console log the questions
+    // console.log("bla bla",questions);
     data.append("cattype", mapping[route.params.categoryId]);
     data.append("mode", "submitrecording");
     let ids = [];
+    let names=[];
     questions[selectedQuestion].forEach((text) => {
       ids.push(text.id);
+      names.push(text.pattern);
     });
     data.append("id", ids);
+    //  add questions to the data object
+    // console.log("questions", questions[selectedQuestion]);
+    data.append("questions", questions[selectedQuestion]);
+    //  append the names to the data
+    data.append("names", names);
     // navigation.navigate("Results_present");
     // navigate to result page and pass data
     console.log(audioFiles)
