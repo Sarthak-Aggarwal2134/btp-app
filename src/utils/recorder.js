@@ -242,6 +242,11 @@ export default function Recorder({ key, text, count, recordedURI, setRecordedURI
               colorScheme="green"
               onPress={IsRecording ? StopRecording : StartRecording}
             />
+            {/* give some indication if the recording is started  and color red*/}
+
+            <Text style={styles.recordingText} >
+              {IsRecording ? "Recording..." : ""} 
+            </Text>
             <Text style={styles.questionText}>{text.pattern}</Text>
           </View>
           {recorded && (
@@ -306,6 +311,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontWeight: "bold",
     fontSize: 20,
+  },
+  recordingText: {
+    marginLeft: 10,
+    fontSize: 10,
+    color: "red",
   },
   headingTextSlider: {
     marginLeft: 10,

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Recorder from "../utils/recorder";
 import CollapsibleView from "@eliav2/react-native-collapsible-view";
-
+import Recorder_After from "../utils/recorder_after_recording";
 import {
   Text,
   View,
@@ -29,7 +29,7 @@ const Results_present = ({ route, navigation }) => {
   const [star, setStar] = useState(0);
   var check = route.params.data._parts[0][1];
   // const [responses, setResponses] = useState([]);
-  console.log("now", route.params.data._parts[4][1]);
+  console.log("now", route.params.audioFiles[0]);
   // iterate over the route.params.data._parts[4][1] array and append to a list called namely
   let namely = [];
   for (let i = 0; i < route.params.data._parts[4][1].length; i++) {
@@ -133,11 +133,14 @@ const Results_present = ({ route, navigation }) => {
   else {
     return (
       <>
-      <View style={{ height: "100%" }}>
-        {namely.map((name) => (
+      <ScrollView style={{ flex: 1 , height: "100%" }}>
+        {namely.map((name,index) => (
           <>
           {random_star()}
-          <View style={{height:"25%"}}>
+
+
+            <ScrollView style={{ flex: 1 }}>
+            <View>
             <Text
               style={{
                 fontSize: 20,
@@ -149,8 +152,6 @@ const Results_present = ({ route, navigation }) => {
             >
               {name}
             </Text>
-
-            <ScrollView style={{ flex: 1, height: "100%" }}>
               <View style={styles.container}>
                 <Row>
                   {/* make 5 columns having "hello" in each column */}
@@ -179,15 +180,21 @@ const Results_present = ({ route, navigation }) => {
                   </Column>
                   {Circular_Progress_Bar()}
                 </Row>
-                <CollapsibleView title={"Expand"}>
+                <CollapsibleView title={"Expand"}
+                >
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     You Speak
                   </Text>
-                  <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+                  <Recorder_After key={1} text={"test"} setAudioFiles={"2"} 
+                  recordedURI={route.params.audioFiles[index]}
+                   />
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     Expert Speak
                   </Text>
-                  <Recorder key={1} text={"test"} setAudioFiles={"2"} />
+                  <Recorder_After key={1} text={"test"} setAudioFiles={"2"} 
+                  recordedURI={route.params.audioFiles[index]}
+
+                  />
                 </CollapsibleView>
                 <View>
                   <Row>
@@ -202,11 +209,13 @@ const Results_present = ({ route, navigation }) => {
                 </View>
               </View>
               
+              </View>
+
             </ScrollView>
-            </View>
+            
           </>
         ))}
-      </View>
+      </ScrollView>
               <View style={{ bottom: 80, height: 50 }}>
                 <Button color="success.600" onPress={onSubmit}>
                   SUBMIT

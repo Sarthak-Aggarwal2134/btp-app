@@ -6,4 +6,4 @@ const Consoleuri= ()=>{
     console.log(global.recordedURI1)
   }
 
-export default Consoleuri
+export default Consoleuri;
