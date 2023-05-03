@@ -171,7 +171,7 @@ const Results_present = ({ route, navigation }) => {
                       type="star"
                       ratingCount={1}
                       fractions={10}
-                      startingValue={{ star_rrate }}
+                      startingValue={ star_rrate }
                       imageSize={40}
                       // showRating
                       style={{ paddingVertical: 10 }}
@@ -216,7 +216,7 @@ const Results_present = ({ route, navigation }) => {
           </>
         ))}
       </ScrollView>
-              <View style={{ bottom: 80, height: 50 }}>
+              <View style={{ bottom: 10, height: 50 }}>
                 <Button color="success.600" onPress={onSubmit}>
                   SUBMIT
                 </Button>

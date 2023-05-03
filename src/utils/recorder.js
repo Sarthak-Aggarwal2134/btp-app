@@ -102,15 +102,13 @@ export default function Recorder({ key, text, count, recordedURI, setRecordedURI
         setRecordedURI(newURIs);
         // set recordeduri1 to the result
         // props.GETURI(result);
-        global.recordedURI1=result;
-        
      console.log(result)
     
     }
       // console.log(recordedURI);
 
       // Reset the Audio Recorder
-      AudioRecorder.current = new Audio.Recording();
+      // AudioRecorder.current = new Audio.Recording();
       setDuration(new Date().getTime() - startTime);
       SetIsRecording(false);
       setRecorded(true);
@@ -119,10 +117,11 @@ export default function Recorder({ key, text, count, recordedURI, setRecordedURI
 
   // Function to play the recorded audio
   const PlayRecordedAudio = async () => {
-    try {
       // Load the Recorded URI
-      await AudioPlayer.current.loadAsync({ uri: recordedURI }, {}, true);
-      console.log(recordedURI)
+    try {
+      console.log("huehue",recordedURI[text.id])
+      await AudioPlayer.current.loadAsync({ uri: recordedURI[text.id] }, {}, true);
+      console.log("hehe")
 
       // Get Player Status
       const playerStatus = await AudioPlayer.current.getStatusAsync();

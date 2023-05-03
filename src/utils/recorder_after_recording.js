@@ -23,6 +23,7 @@ export default function Recorder_After({ key, text, count, recordedURI, setRecor
   const AudioPlayer = useRef(new Audio.Sound());
 
   // States for UI
+  
   const [AudioPermission, SetAudioPermission] = useState(false);
   const [IsRecording, SetIsRecording] = useState(false);
   const [IsPLaying, SetIsPLaying] = useState(false);
