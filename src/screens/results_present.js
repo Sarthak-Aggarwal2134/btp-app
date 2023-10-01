@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Recorder from "../utils/recorder";
 import CollapsibleView from "@eliav2/react-native-collapsible-view";
 import Recorder_After from "../utils/recorder_after_recording";
+import { FontAwesome } from "@expo/vector-icons";
 import {
   Text,
   View,
@@ -182,9 +183,36 @@ const Results_present = ({ route, navigation }) => {
                 </Row>
                 <CollapsibleView title={"Expand"}
                 >
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    You Speak
-                  </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>You Speak</Text>
+                      {/* add a clickable search favicon icon */}
+                      <View style={{ marginLeft: 250 }}></View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (check == "phenome") {
+                            navigation.navigate("Phoneme");
+                          }
+                          //  chewck if the category is stress, then redirect it to the stress page
+                          else if (check == "stress") {
+                            navigation.navigate("Result_graph_1");
+                          }
+                          //  chewck if the category is intonation, then redirect it to the intonation page
+                          else if (check == "intonation") {
+                            navigation.navigate("Result_graph_2");
+                          }
+                          //  chewck if the category is sentence, then redirect it to the sentence page
+                          else if (check == "sentence") {
+                            navigation.navigate("Fluency");
+                          }// Navigate to the search screen
+                        }}
+                      >
+                        <FontAwesome
+                          name="search" // Use the FontAwesome icon name for the search icon
+                          size={20}
+                          color="black" // Customize the color
+                        />
+                      </TouchableOpacity>
+                  </View>
                   <Recorder_After key={1} text={"test"} setAudioFiles={"2"} 
                   recordedURI={route.params.audioFiles[index]}
                    />
