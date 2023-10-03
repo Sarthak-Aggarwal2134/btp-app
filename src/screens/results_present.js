@@ -33,15 +33,35 @@ const Results_present = ({ route, navigation }) => {
   console.log("now", route.params.audioFiles[0]);
   // iterate over the route.params.data._parts[4][1] array and append to a list called namely
   let namely = [];
+  let star_rating = [];
+  let phoneme_score = [];
+  let labels_rec = [];
   for (let i = 0; i < route.params.data._parts[4][1].length; i++) {
     namely.push(route.params.data._parts[4][1][i]);
+    const jsonData = JSON.parse(route.params.data._parts[5][1][i]);
+    star_rating.push(jsonData.word);
+    phoneme_score.push(jsonData.phoneme);
+    // console.log("name tarun", jsonData);
+    labels_rec.push(jsonData.lables);
   }
-  console.log("namely", namely);
+  // const jsonData = JSON.parse(route.params.data._parts[5][1][0]);
+
+  // Extract the "word" value
+  // const word = jsonData.word;
+
+  // Log the "word" value to the console
+  // console.log("name tarun", jsonData);
+  console.log("name tarun label", labels_rec);
+  console.log("name tarun phoneme", phoneme_score);
+  // store the array of phoneme score for each word and store it in phoneme_score
+  // console.log("name tarun",route.params.data._parts[5][1][0])
+  // console word
+
+  // console.log("namely", namely);
   const random = () => {
     return Math.floor(Math.random() * 100) + 1;
   };
-
-  let star_rrate=0.0;
+  let star_rrate = 0.0;
   // create a array having entries as 0.0,0.1,0.2,...,1.0
   const arr_star = Array.from({ length: 11 }, (_, i) => i / 10);
   // create a function that return any random element from the array
@@ -78,37 +98,19 @@ const Results_present = ({ route, navigation }) => {
       navigation.navigate("Fluency");
     }
   };
-  
-  // function to return Circular Progress Bar with input progress value
-  let number_render = 0;
-  const Circular_Progress_Bar = () => {
-    number_render = random_cat();
-    console.log(number_render);
-    // render circular compoment number_render times
-    let circular_component = [];
-    for (let i = 0; i < number_render; i++) {
-      circular_component.push(
-        <Column style={{ margin: 10 }}>
-          <CircularProgress
-            radius={28}
-            value={random()}
-            style={{ margin: 10 }}
-          />
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            {arr[i]}
-          </Text>
-        </Column>
-      );
-    }
-    return circular_component;
-  };
 
+  const Circular_Progress_Bar = ({ index }) => {
+    return (
+      <ScrollView horizontal={true}>
+        {phoneme_score[index].map((score, i) => (
+          <Column key={i} style={{ margin: 10 }}>
+            <CircularProgress radius={28} value={parseFloat(score)} style={{ margin: 10 }} />
+            <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>{labels_rec[index][i]}</Text>
+          </Column>
+        ))}
+      </ScrollView>
+    );
+  };
   //  create a loading function that set teh loading to false after 15 seconds
   const loading_function = () => {
     setTimeout(() => {
@@ -134,265 +136,129 @@ const Results_present = ({ route, navigation }) => {
   else {
     return (
       <>
-      <ScrollView style={{ flex: 1 , height: "100%" }}>
-        {namely.map((name,index) => (
-          <>
-          {random_star()}
+        <ScrollView style={{ flex: 1, height: "100%" }}>
+          {namely.map((name, index) => (
+            <>
+              {random_star()}
 
-
-            <ScrollView style={{ flex: 1 }}>
-            <View>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                textAlign: "center",
-                margin: 10,
-                color: "#ff5733",
-              }}
-            >
-              {name}
-            </Text>
-              <View style={styles.container}>
-                <Row>
-                  {/* make 5 columns having "hello" in each column */}
-                  <Column style={{ margin: 10 }}>
-                    {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
-                    {/* rating = 0.6 */}
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        fontWeight: "bold",
-                        textAlign: "center",
-                      }}
-                    >
-                      Rating = {star_rrate}
-                    </Text>
-                    <Rating
-                      type="star"
-                      ratingCount={1}
-                      fractions={10}
-                      startingValue={ star_rrate }
-                      imageSize={40}
-                      // showRating
-                      style={{ paddingVertical: 10 }}
-                    />
-                    <Row>{/* show the first element of the array */}</Row>
-                  </Column>
-                  {Circular_Progress_Bar()}
-                </Row>
-                <CollapsibleView title={"Expand"}
-                >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>You Speak</Text>
-                      {/* add a clickable search favicon icon */}
-                      <View style={{ marginLeft: 250 }}></View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (check == "phenome") {
-                            navigation.navigate("Phoneme");
-                          }
-                          //  chewck if the category is stress, then redirect it to the stress page
-                          else if (check == "stress") {
-                            navigation.navigate("Result_graph_1");
-                          }
-                          //  chewck if the category is intonation, then redirect it to the intonation page
-                          else if (check == "intonation") {
-                            navigation.navigate("Result_graph_2");
-                          }
-                          //  chewck if the category is sentence, then redirect it to the sentence page
-                          else if (check == "sentence") {
-                            navigation.navigate("Fluency");
-                          }// Navigate to the search screen
-                        }}
-                      >
-                        <FontAwesome
-                          name="search" // Use the FontAwesome icon name for the search icon
-                          size={20}
-                          color="black" // Customize the color
-                        />
-                      </TouchableOpacity>
-                  </View>
-                  <Recorder_After key={1} text={"test"} setAudioFiles={"2"} 
-                  recordedURI={route.params.audioFiles[index]}
-                   />
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    Expert Speak
-                  </Text>
-                  <Recorder_After key={1} text={"test"} setAudioFiles={"2"} 
-                  recordedURI={route.params.audioFiles[index]}
-
-                  />
-                </CollapsibleView>
+              <ScrollView style={{ flex: 1 }}>
                 <View>
-                  <Row>
-                    <Column></Column>
-                    {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
-          <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>  
-      
-          </Column> */}
-                    <Column style={{ paddingLeft: 150 }}></Column>
-                    <Column></Column>
-                  </Row>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      margin: 10,
+                      color: "#ff5733",
+                    }}
+                  >
+                    {name}
+                  </Text>
+                  <ScrollView style={styles.container}>
+                    <Row style={{ flexDirection: "row", alignItems: "center" }}>
+                      {/* make 5 columns having "hello" in each column */}
+                      <Column style={{ margin: 10 }}>
+                        {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
+                        {/* rating = 0.6 */}
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            fontWeight: "bold",
+                            textAlign: "center",
+                          }}
+                        >
+                          Rating = {star_rating[index]}
+                        </Text>
+                        <Rating
+                          type="star"
+                          ratingCount={1}
+                          fractions={10}
+                          startingValue={star_rating[index] / 5}
+                          imageSize={40}
+                          // showRating
+                          style={{ paddingVertical: 10 }}
+                        />
+                        <Row>{/* show the first element of the array */}</Row>
+                      </Column>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        {Circular_Progress_Bar((index = { index }))}
+                      </View>
+                    </Row>
+                    <CollapsibleView title={"Expand"}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                          You Speak
+                        </Text>
+                        {/* add a clickable search favicon icon */}
+                        <View style={{ marginLeft: 250 }}></View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (check == "phenome") {
+                              navigation.navigate("Phoneme");
+                            }
+                            //  chewck if the category is stress, then redirect it to the stress page
+                            else if (check == "stress") {
+                              navigation.navigate("Result_graph_1");
+                            }
+                            //  chewck if the category is intonation, then redirect it to the intonation page
+                            else if (check == "intonation") {
+                              navigation.navigate("Result_graph_2");
+                            }
+                            //  chewck if the category is sentence, then redirect it to the sentence page
+                            else if (check == "sentence") {
+                              navigation.navigate("Fluency");
+                            } // Navigate to the search screen
+                          }}
+                        >
+                          <FontAwesome
+                            name="search" // Use the FontAwesome icon name for the search icon
+                            size={20}
+                            color="black" // Customize the color
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <Recorder_After
+                        key={1}
+                        text={"test"}
+                        setAudioFiles={"2"}
+                        recordedURI={route.params.audioFiles[index]}
+                      />
+                      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                        Expert Speak
+                      </Text>
+                      <Recorder_After
+                        key={1}
+                        text={"test"}
+                        setAudioFiles={"2"}
+                        recordedURI={route.params.audioFiles[index]}
+                      />
+                    </CollapsibleView>
+                    <View>
+                      <Row>
+                        <Column></Column>
+                        
+                        <Column style={{ paddingLeft: 150 }}></Column>
+                        <Column></Column>
+                      </Row>
+                    </View>
+                  </ScrollView>
                 </View>
-              </View>
-              
-              </View>
-
-            </ScrollView>
-            
-          </>
-        ))}
-      </ScrollView>
-              <View style={{ bottom: 10, height: 50 }}>
-                <Button color="success.600" onPress={onSubmit}>
-                  SUBMIT
-                </Button>
-              </View>
-              </>
+              </ScrollView>
+            </>
+          ))}
+        </ScrollView>
+        <View style={{ bottom: 10, height: 50 }}>
+          <Button color="success.600" onPress={onSubmit}>
+            SUBMIT
+          </Button>
+        </View>
+      </>
     );
   }
-  // return (
-  //   <>
-  //     <View style={{ height: "100%" }}>
-  //       <Text
-  //         style={{
-  //           fontSize: 20,
-  //           fontWeight: "bold",
-  //           textAlign: "center",
-  //           margin: 10,
-  //           color: "#ff5733",
-  //         }}
-  //       >
-  //         Peak
-  //       </Text>
-
-  //       <ScrollView style={{ flex: 1, height: "100%" }}>
-  //         <View style={styles.container}>
-  //           <Row>
-  //             {/* make 5 columns having "hello" in each column */}
-  //             <Column style={{ margin: 10 }}>
-  //               {/* <CircularProgress radius={38} value={58} activeStrokeColor={'#f39c12'} /> */}
-  //               {/* rating = 0.6 */}
-  //               <Text
-  //                 style={{
-  //                   fontSize: 10,
-  //                   fontWeight: "bold",
-  //                   textAlign: "center",
-  //                 }}
-  //               >
-  //                 Rating = 0.6
-  //               </Text>
-  //               <Rating
-  //                 type="star"
-  //                 ratingCount={1}
-  //                 fractions={10}
-  //                 startingValue={0.6}
-  //                 imageSize={40}
-  //                 // showRating
-  //                 style={{ paddingVertical: 10 }}
-  //               />
-  //               <Row>{/* show the first element of the array */}</Row>
-  //             </Column>
-  //             {Circular_Progress_Bar()}
-  //           </Row>
-  //           <CollapsibleView title={"Expand"}>
-  //             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-  //               You Speak
-  //             </Text>
-  //             <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-  //             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-  //               Expert Speak
-  //             </Text>
-  //             <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-  //           </CollapsibleView>
-  //           <View>
-  //             <Row>
-  //               <Column></Column>
-  //               {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
-  //     <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>
-
-  //     </Column> */}
-  //               <Column style={{ paddingLeft: 150 }}></Column>
-  //               <Column></Column>
-  //             </Row>
-  //           </View>
-  //         </View>
-
-  //         <View height={10} />
-  //         <Text
-  //           style={{
-  //             fontSize: 20,
-  //             fontWeight: "bold",
-  //             textAlign: "center",
-  //             margin: 10,
-  //             color: "#ff5733",
-  //           }}
-  //         >
-  //           Beak
-  //         </Text>
-
-  //         <View style={styles.container}>
-  //           <Row>
-  //             {/* make 5 columns having "hello" in each column */}
-  //             <Column style={{ margin: 10 }}>
-  //               <Text
-  //                 style={{
-  //                   fontSize: 10,
-  //                   fontWeight: "bold",
-  //                   textAlign: "center",
-  //                 }}
-  //               >
-  //                 Rating = 0.4
-  //               </Text>
-  //               <Rating
-  //                 type="star"
-  //                 ratingCount={1}
-  //                 fractions={10}
-  //                 startingValue={0.4}
-  //                 imageSize={40}
-  //                 // showRating
-  //                 style={{ paddingVertical: 10 }}
-  //               />
-  //               <Row>{/* show the first element of the array */}</Row>
-  //             </Column>
-  //             {Circular_Progress_Bar()}
-  //           </Row>
-  //           <CollapsibleView title={"Expand"}>
-  //             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-  //               You Speak
-  //             </Text>
-  //             <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-  //             <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-  //               Expert Speak
-  //             </Text>
-  //             <Recorder key={1} text={"test"} setAudioFiles={"2"} />
-  //           </CollapsibleView>
-
-  //           <View>
-  //             <Row>
-  //               <Column></Column>
-  //               {/* <Column onPress={onSubmit1} style = {{paddingLeft :150}}>
-  //     <Text style = {{fontSize:30,fontWeight:"bold",textAlign:"center"}}>\/</Text>
-
-  //     </Column> */}
-  //               <Column style={{ paddingLeft: 150 }}></Column>
-  //               <Column></Column>
-  //             </Row>
-  //           </View>
-  //         </View>
-
-  //         <View height={100} />
-  //         {/* add a submit button */}
-  //       </ScrollView>
-  //       <View style={{ bottom: 10, height: 50 }}>
-  //         <Button color="success.600" onPress={onSubmit}>
-  //           SUBMIT
-  //         </Button>
-  //       </View>
-  //     </View>
-  //   </>
-  // );
 };
 
 const styles = StyleSheet.create({

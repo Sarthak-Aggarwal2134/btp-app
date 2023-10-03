@@ -1,0 +1,9 @@
+{
+"word":"0.39",
+"phoneme":["92.17","82.94","65.60","65.98"],
+"lables":["syl#0","syl#1","syl#2","syl#3"],
+"values":[{"x":"0.00","y":"0.55"},{"x":"0.78","y":"0.49"},{"x":"1.04","y":"0.93"},{"x":"1.32","y":"0.29"},{"x":"1.39","y":"0.32"}],
+"colors":["0.79","0.38","0.07","0.35","0.51","0.02","0.78","0.91"],
+"details":[{"text":"test 0 <br> test 1 <br> test 2"},{"text":"test 1 <br> test 2 <br> test 3"},{"text":"test 2 <br> test 3 <br> test 4"},{"text":"test 3 <br> test 4 <br> test 5"},{"text":"test 4"},{"text":"test 5 <br> test 6 <br> test 7"},{"text":"test 6 <br> test 7"},{"text":"test 7"}
+]
+}

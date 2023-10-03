@@ -53,34 +53,49 @@ const Lesson = ({ route, navigation }) => {
   }, [recordedURIs]);
   // console.log("bla bla",questions[selectedQuestion].pattern);
 
-  const onSubmit = () => {
-    var data = new FormData();
-    // console.log(mapping[route.params]);
-    // console.log(route)
-    // console log the questions
-    // console.log("bla bla",questions);
-    data.append("cattype", mapping[route.params.categoryId]);
-    data.append("mode", "submitrecording");
-    let ids = [];
-    let names=[];
-    questions[selectedQuestion].forEach((text) => {
-      ids.push(text.id);
-      names.push(text.pattern);
+  const onSubmit = async () => {
+    let formData = new FormData();
+
+    audioFiles.forEach((fileUri, index) => {
+        formData.append(`audioFile_${index}`, {
+            uri: fileUri,
+            type: 'audio/mp4',
+            name: `audio_${index}.mp4`,
+        });
     });
-    data.append("id", ids);
-    //  add questions to the data object
-    // console.log("questions", questions[selectedQuestion]);
-    data.append("questions", questions[selectedQuestion]);
-    //  append the names to the data
-    data.append("names", names);
-    // navigation.navigate("Results_present");
-    // navigate to result page and pass data
-    console.log(audioFiles)
-    navigation.navigate("Results_present", {
-      data: data,
-      audioFiles: audioFiles,
-    });
-  };
+
+
+    try {
+        let response = await axios.post("http://127.0.0.1:5001/process_audio", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        let data=new FormData();
+        data.append("cattype", mapping[route.params.categoryId]);
+        data.append("mode","submitrecording");
+        let ids = [];
+        let names=[];
+        questions[selectedQuestion].forEach((text) => {
+          ids.push(text.id);
+          names.push(text.pattern);
+        });
+        data.append("id", ids);
+        //  add questions to the data object
+        // console.log("questions", questions[selectedQuestion]);
+        data.append("questions", questions[selectedQuestion]);
+        //  append the names to the data
+        data.append("names", names);
+        data.append("data_from_python",response.data);
+        console.log("Data:", data);
+        // Navigate to Results_present with the result
+        navigation.navigate("Results_present", { data: data,
+        audioFiles: audioFiles});
+
+    } catch (error) {
+        console.log("Error:", error);
+    }
+};
 
   return (
     <View style={styles.container}>
