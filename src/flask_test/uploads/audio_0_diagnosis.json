@@ -1,9 +1,9 @@
 {
-"word":"2.98",
-"phoneme":["84.77","64.45","32.71"],
-"lables":["syl#0","syl#1","syl#2"],
-"values":[{"x":"0.00","y":"0.32"},{"x":"0.36","y":"0.59"},{"x":"0.73","y":"0.45"},{"x":"0.98","y":"0.32"}],
-"colors":["0.43","0.38","0.99","0.45","0.11","0.23","0.19","0.30","0.44","0.33","0.35"],
-"details":[{"text":"test 0"},{"text":"test 1"},{"text":"test 2 <br> test 3 <br> test 4"},{"text":"test 3"},{"text":"test 4 <br> test 5"},{"text":"test 5"},{"text":"test 6 <br> test 7"},{"text":"test 7 <br> test 8"},{"text":"test 8 <br> test 9"},{"text":"test 9 <br> test 10"},{"text":"test 10"}
+"word":"3.58",
+"phoneme":["95.78","27.35","23.93","76.37","71.91","64.49","93.90"],
+"lables":["syl#0","syl#1","syl#2","syl#3","syl#4","syl#5","syl#6"],
+"values":[{"x":"0.00","y":"0.47"},{"x":"0.27","y":"0.66"},{"x":"0.56","y":"0.55"},{"x":"0.76","y":"0.31"},{"x":"0.84","y":"0.55"},{"x":"0.86","y":"0.14"},{"x":"0.99","y":"0.69"},{"x":"1.13","y":"0.88"}],
+"colors":["0.72","0.66","0.43","0.84","0.63","0.25","0.83","0.88","0.17","0.88"],
+"details":[{"text":"test 0 <br> test 1"},{"text":"test 1"},{"text":"test 2"},{"text":"test 3"},{"text":"test 4 <br> test 5"},{"text":"test 5"},{"text":"test 6 <br> test 7 <br> test 8"},{"text":"test 7"},{"text":"test 8 <br> test 9 <br> test 10"},{"text":"test 9 <br> test 10"}
 ]
 }

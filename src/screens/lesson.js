@@ -66,11 +66,12 @@ const Lesson = ({ route, navigation }) => {
 
 
     try {
-        let response = await axios.post("http://127.0.0.1:5001/process_audio", formData, {
+        let response = await axios.post("https://btp-flask.onrender.com/process_audio", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        
         let data=new FormData();
         data.append("cattype", mapping[route.params.categoryId]);
         data.append("mode","submitrecording");

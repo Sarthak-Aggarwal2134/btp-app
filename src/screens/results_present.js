@@ -25,6 +25,7 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import Bar_graph from "./results_graph";
 import Graph from "./Line_Graph_component";
+import Video_page from "./phoneme";
 const Results_present = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [star, setStar] = useState(0);
@@ -36,6 +37,7 @@ const Results_present = ({ route, navigation }) => {
   let star_rating = [];
   let phoneme_score = [];
   let labels_rec = [];
+  // console log the whole route.params.data
   for (let i = 0; i < route.params.data._parts[4][1].length; i++) {
     namely.push(route.params.data._parts[4][1][i]);
     const jsonData = JSON.parse(route.params.data._parts[5][1][i]);
@@ -44,58 +46,38 @@ const Results_present = ({ route, navigation }) => {
     // console.log("name tarun", jsonData);
     labels_rec.push(jsonData.lables);
   }
-  // const jsonData = JSON.parse(route.params.data._parts[5][1][0]);
-
-  // Extract the "word" value
-  // const word = jsonData.word;
-
-  // Log the "word" value to the console
-  // console.log("name tarun", jsonData);
-  console.log("name tarun label", labels_rec);
-  console.log("name tarun phoneme", phoneme_score);
-  // store the array of phoneme score for each word and store it in phoneme_score
-  // console.log("name tarun",route.params.data._parts[5][1][0])
-  // console word
-
-  // console.log("namely", namely);
-  const random = () => {
-    return Math.floor(Math.random() * 100) + 1;
-  };
   let star_rrate = 0.0;
   // create a array having entries as 0.0,0.1,0.2,...,1.0
   const arr_star = Array.from({ length: 11 }, (_, i) => i / 10);
   // create a function that return any random element from the array
-  const random_star = () => {
-    //  set the star rating to the random value
-    star_rrate = arr_star[Math.floor(Math.random() * arr_star.length)];
-    // return arr_star[Math.floor(Math.random() * arr_star.length)];
-  };
-  // create a array having random alphabetically literals each of length 4
-  const arr = ["x01", "x02", "x03", "x04"];
-
-  //  create a function that return any integer between 1 to 4
-  const random_cat = () => {
-    return Math.floor(Math.random() * 4) + 1;
-  };
-
   // const [controlledValue, setControlledValue] = useState(false);
 
   const onSubmit = () => {
     //  chewck if the category is phoneme, then redirect it to the phoneme page
     if (check == "phenome") {
-      navigation.navigate("Phoneme");
+      navigation.navigate("Phoneme",{
+        data:route.params.data,
+      });
+  
     }
     //  chewck if the category is stress, then redirect it to the stress page
     else if (check == "stress") {
-      navigation.navigate("Result_graph_1");
+      navigation.navigate('Result_graph_1',{
+        data:route.params.data,
+      });
     }
     //  chewck if the category is intonation, then redirect it to the intonation page
     else if (check == "intonation") {
-      navigation.navigate("Result_graph_2");
+      navigation.navigate('Result_graph_2',{
+        data:route.params.data,
+       });
     }
     //  chewck if the category is sentence, then redirect it to the sentence page
     else if (check == "sentence") {
-      navigation.navigate("Fluency");
+      navigation.navigate("Fluency",
+      {
+        data:route.params.data,
+       });
     }
   };
 
@@ -139,8 +121,6 @@ const Results_present = ({ route, navigation }) => {
         <ScrollView style={{ flex: 1, height: "100%" }}>
           {namely.map((name, index) => (
             <>
-              {random_star()}
-
               <ScrollView style={{ flex: 1 }}>
                 <View>
                   <Text
@@ -197,20 +177,32 @@ const Results_present = ({ route, navigation }) => {
                         <View style={{ marginLeft: 250 }}></View>
                         <TouchableOpacity
                           onPress={() => {
+                            // const audioData = route.params.audioFiles[index]; // Extracting the audio data for the current index
+                            // const audioName = name; // Using the 'name' variable as the name of the audio
+                            // const audioID = index; // Using the index as the audio ID (or you can adjust this as per your data structure)
+
                             if (check == "phenome") {
-                              navigation.navigate("Phoneme");
+                              navigation.navigate("Phoneme",{
+                                data:route.params.data,
+                              });
                             }
                             //  chewck if the category is stress, then redirect it to the stress page
                             else if (check == "stress") {
-                              navigation.navigate("Result_graph_1");
+                              navigation.navigate("Result_graph_1",{
+                                data:route.params.data,
+                              });
                             }
                             //  chewck if the category is intonation, then redirect it to the intonation page
                             else if (check == "intonation") {
-                              navigation.navigate("Result_graph_2");
+                              navigation.navigate('Result_graph_2',{
+                                data:route.params.data,
+                               });
                             }
                             //  chewck if the category is sentence, then redirect it to the sentence page
                             else if (check == "sentence") {
-                              navigation.navigate("Fluency");
+                              navigation.navigate("Fluency",{
+                                data:route.params.data,
+                              });
                             } // Navigate to the search screen
                           }}
                         >
