@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import global from "../global"
+import * as FileSystem from 'expo-file-system';
 import Consoleuri from "../consoleuri"
 import {
   Text,
@@ -91,7 +92,7 @@ const Lesson = ({ route, navigation }) => {
         console.log("Data:", data);
         // Navigate to Results_present with the result
         navigation.navigate("Results_present", { data: data,
-        audioFiles: audioFiles});
+        audioFiles: audioFiles, names:names, ids:ids});
 
     } catch (error) {
         console.log("Error:", error);
