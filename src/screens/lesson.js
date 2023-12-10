@@ -54,14 +54,34 @@ const Lesson = ({ route, navigation }) => {
   }, [recordedURIs]);
   // console.log("bla bla",questions[selectedQuestion].pattern);
 
-  const onSubmit = async () => {
+  // const onSubmit = async () => {
+  //   let formData = new FormData();
+
+  //   audioFiles.forEach((fileUri, index) => {
+  //       formData.append(`audioFile_${index}`, {
+  //           uri: fileUri,
+  //           type: 'audio/mp4',
+  //           name: `audio_${index}.mp4`,
+  //       });
+  //   });
+  async function onSubmit() {
+    // Assuming audioFiles is an array of file URIs
+    // let audioFiles = [...]; // your array of audio file URIs
+
     let formData = new FormData();
 
     audioFiles.forEach((fileUri, index) => {
+        // Determine the file type based on the file extension
+        let fileType = 'audio/mp4'; // Default file type
+        if (fileUri.endsWith('.wav')) {
+            fileType = 'audio/wav';
+        }
+
+        // Append the file to formData
         formData.append(`audioFile_${index}`, {
             uri: fileUri,
-            type: 'audio/mp4',
-            name: `audio_${index}.mp4`,
+            type: fileType,
+            name: `audio_${index}.${fileType.split('/')[1]}`, // This will set the correct file extension
         });
     });
 

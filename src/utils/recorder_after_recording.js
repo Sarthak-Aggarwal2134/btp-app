@@ -16,14 +16,14 @@ import Filler from "./filler";
 // import phoneme audio wav file from the assets folder
 
 
-export default function Recorder_After({ key, text, count, recordedURI, setRecordedURI }) {
+export default function Recorder_After({text, count, recordedURI, setRecordedURI }) {
   const {URI1,URI2}=useSelector(state=>state.uri_reducer);
   const dispatch=useDispatch();
   const AudioRecorder = useRef(new Audio.Recording());
   const AudioPlayer = useRef(new Audio.Sound());
 
   // States for UI
-  
+  console.log("rURI in recorder",recordedURI);
   const [AudioPermission, SetAudioPermission] = useState(false);
   const [IsRecording, SetIsRecording] = useState(false);
   const [IsPLaying, SetIsPLaying] = useState(false);
@@ -68,7 +68,7 @@ export default function Recorder_After({ key, text, count, recordedURI, setRecor
     } catch (error) {}
   };
 
-  console.log("Key Id:", key, text);
+  console.log("rURI in after recorder",recordedURI);
   return (
     <View style={styles.question}>
 

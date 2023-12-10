@@ -37,20 +37,26 @@ const Results_present = ({ route, navigation }) => {
   let star_rating = [];
   let phoneme_score = [];
   let labels_rec = [];
+  let audioFiles = [];
   // console log the whole route.params.data
   for (let i = 0; i < route.params.data._parts[4][1].length; i++) {
     namely.push(route.params.data._parts[4][1][i]);
+    audioFiles.push(route.params.audioFiles[i]);
     const jsonData = JSON.parse(route.params.data._parts[5][1][i]);
     star_rating.push(jsonData.word);
     phoneme_score.push(jsonData.phoneme);
     // console.log("name tarun", jsonData);
     labels_rec.push(jsonData.lables);
   }
+  console.log("audio files check reulst arrat", audioFiles);
   let star_rrate = 0.0;
   // create a array having entries as 0.0,0.1,0.2,...,1.0
   const arr_star = Array.from({ length: 11 }, (_, i) => i / 10);
   // create a function that return any random element from the array
   // const [controlledValue, setControlledValue] = useState(false);
+
+  // store the uri in an array of the length = route.params.audioFiles.length
+  // const [recordedURIs, setRecordedURIs] = useState("");
 
   const onSubmit = () => {
     //  chewck if the category is phoneme, then redirect it to the phoneme page
@@ -132,7 +138,7 @@ const Results_present = ({ route, navigation }) => {
                       color: "#ff5733",
                     }}
                   >
-                    {name}
+                    {console.log("Index:", index, "URI:", audioFiles[index])}
                   </Text>
                   <ScrollView style={styles.container}>
                     <Row style={{ flexDirection: "row", alignItems: "center" }}>
@@ -214,19 +220,17 @@ const Results_present = ({ route, navigation }) => {
                         </TouchableOpacity>
                       </View>
                       <Recorder_After
-                        key={1}
-                        text={"test"}
-                        setAudioFiles={"2"}
-                        recordedURI={route.params.audioFiles[index]}
+                        text="hello"
+                        setAudioFiles="2"
+                        recordedURI={audioFiles[0]}
                       />
                       <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                         Expert Speak
                       </Text>
                       <Recorder_After
-                        key={1}
-                        text={"test"}
+                        text={"hi"}
                         setAudioFiles={"2"}
-                        recordedURI={route.params.audioFiles[index]}
+                        recordedURI={route.params.audioFiles[0]}
                       />
                     </CollapsibleView>
                     <View>
